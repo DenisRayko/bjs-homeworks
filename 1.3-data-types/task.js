@@ -1,39 +1,32 @@
-"use strict";
-
-"use strict";
-
 function calculateTotalMortgage(percent, contribution, amount, date) {
-    let today =  new Date();
-    let monthsQuantity = (date.getFullYear() - today.getFullYear()) * 12 - (today.getMonth() + 1) + date.getMonth() + 1;;
-    if (isNaN(percent)) {
-    return `Параметр "Процентная ставка" содержит неправильное значение ${percent}`;
+    "use strict";
+    // не совсем понимаю как можно было испраавить ошибки,
+    // чтобы чтобы резульатат приводился к числу
+    // поэтому привел аргементы функции к числу
+    let parsedPercent = parseInt(percent); 
+    let parsedContribution = parseInt(contribution);
+    let parsedAmount = parseInt(amount);
+    if (isNaN(parsedPercent)) {
+        return `Параметр процентная ставка содержит неправильное значение ${percent}`;
+    } else if (isNaN(parsedContribution)) {
+        return `Параметр сумма первоначального взноса содержит неправильное значение ${contribution}`;
+    } else if (isNaN(parsedAmount)) {
+        return `Параметр сумма кредита содержит неправильное значение ${amount}`;
     }
-     
-    else if (isNaN(contribution)) {
-        return `Параметр "Первоначальный вхнос" содержит неправильное значение ${contribution}`;
-        }
-
-  else if (isNaN(amount)) {
-            return `Параметр "Сумма кредита" содержит неправильное значение ${amount}`;
-            }
-
-    else if (date =='Invalid date'|| monthsQuantity < 12) {
-                return `Введите корректную дату погашения ипотеки`;
-                }
-else{
-let sumLeft = amount - contribution;
-let monthlyPercent = percent / 1200; 
-let monthlyPayment = sumLeft * (monthlyPercent + monthlyPercent / (((1 + monthlyPercent)) - 1));
-let totalAmount = monthlyPayment * monthsQuantity; 
- return totalAmount.toFixed(2);
+    let sumLeft = parsedAmount - parsedContribution;
+    let currentDate = new Date();
+    let monthsQuantity = date.getMonth() - currentDate.getMonth() + (12 * (date.getFullYear() - currentDate.getFullYear()));
+    let monthlyPercent = (parsedPercent / 1200);
+    let monthlyPayment = sumLeft * (monthlyPercent + monthlyPercent / (((1 + monthlyPercent)**monthsQuantity) - 1));
+    let totalAmount = monthlyPayment * monthsQuantity;
+    totalAmount = new Number(totalAmount.toFixed(2));
+    return totalAmount;
 }
-}
-
     // код для задачи №2 писать здесь
     function getGreeting(name) {
-        if (!name || name == "null" || name == "undefined") {
-          name = "Анон";
+        if (!name) {
+          name = "Аноним";
         }
-        let greeting = `Привет, мир! Меня зовут ${name}`;
+        let greeting = `Привет, мир! Меня зовут ${name}.`;
         return greeting;
       }
